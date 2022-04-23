@@ -4,11 +4,6 @@
   vars:
 
   tasks:
-    - debug:
-        msg: "{{ ansible_env.HOME }}"
-
-    - meta: end_play
-
     - name: Create a directory if it does not exist
       ansible.builtin.file:
         path: "{{ item }}"

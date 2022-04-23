@@ -1,0 +1,70 @@
+Config { 
+
+     font =         "xft:Cascadia Mono PL:size=12:antialias=true:hinting=true"
+   , bgColor =      "#21252b"
+   , fgColor =      "#828997"
+   , position =     Top
+   , border =       BottomB
+   , borderColor =  "#2C323C"
+
+   , sepChar =  "%"   -- delineator between plugin names and straight text
+   , alignSep = "}{"  -- separator between left-right alignment
+   , template = "%whoami% | %StdinReader% | %cpu% | %coretemp% | %memory% | %dynnetwork% | %default:Master%}{ %EKCH% | %date% | %kbd% "
+
+   , lowerOnStart =     True    -- send to bottom of window stack on start
+   , hideOnStart =      False   -- start with window unmapped (hidden)
+   , allDesktops =      True    -- show on all desktops
+   , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
+   , pickBroadest =     False   -- choose widest display (multi-monitor)
+   , persistent =       True    -- enable/disable hiding (True = disabled)
+
+   --   see http://projects.haskell.org/xmobar/#system-monitor-plugins.
+   , commands = 
+        [ Run Weather "EKCH" [ "--template" , "<fc=#D19A66><skyCondition></fc> | <tempC>°C | <fc=#61AFEF><rh>%</fc>"
+                             ,"--normal"    , "#98C379"
+                             , "--high"     , "#E06C75"
+                             , "--low"      , "#61AFEF" 
+                             ] 36000
+
+        , Run DynNetwork     [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+                             , "--Low"      , "1000"       -- units: B/s
+                             , "--High"     , "5000"       -- units: B/s
+                             , "--low"      , "#61AFEF"
+                             , "--normal"   , "#98C379"
+                             , "--high"     , "#E06C75"
+                             ] 10
+
+        , Run Cpu            [ "-L"         , "3"
+                             ,"-H"          , "50"
+                             ,"--normal"    , "#98c379"
+                             ,"--high"      , "#e06c75"
+                             ] 10
+
+        , Run CoreTemp       [ "--template" , "Temp: <core0>°C|<core1>°C"
+                             , "--Low"      , "70"        -- units: °C
+                             , "--High"     , "80"        -- units: °C
+                             , "--low"      , "#61AFEF"
+                             , "--normal"   , "#98C379"
+                             , "--high"     , "#E06C75"
+                             ] 50
+                          
+        , Run Memory         [ "--template" ,"Mem: <usedratio>%"
+                             , "--Low"      , "20"        -- units: %
+                             , "--High"     , "90"        -- units: %
+                             , "--low"      , "#61AFEF"
+                             , "--normal"   , "#98C379"
+                             , "--high"     , "#E06C75"
+                             ] 10
+        , Run Volume "default" "Master" [] 10
+
+        -- time and date indicator 
+        --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
+        , Run Date           "<fc=#D19A66>%F (%a) %T</fc>" "date" 10
+
+        -- keyboard layout indicator
+        , Run Kbd            [ ("dk" , "<fc=#61AFEF>DK</fc>")
+                             , ("us" , "<fc=#D19A66>US</fc>")
+                             ]
+	, Run StdinReader
+        ]
+   }

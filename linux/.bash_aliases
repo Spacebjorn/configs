@@ -14,3 +14,5 @@ alias gcob="git checkout -b"
 alias gc="git commit"
 alias gcm="git commit -m"
 alias ga="git add"
+
+alias k="kubectl"
